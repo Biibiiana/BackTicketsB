@@ -1,5 +1,6 @@
 require("dotenv").config();
 const express = require("express");
+const mongoose = require('mongoose');
 const cors = require("cors");
 const app = express();
 
@@ -8,6 +9,19 @@ app.use(cors());
 
 // Middleware para parsear cuerpos de solicitud en JSON
 app.use(express.json());
+
+// Importar los modelos para inicializar la base de datos
+require('./models/User.model')
+require('./models/Ticket.model')
+require('./models/Event.model')
+
+// Conecta a MongoDB Atlas
+mongoose.connect(process.env.MONGODB_ATLAS_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+.then(() => console.log('Connected to MongoDB Atlas'))
+.catch((err) => console.error('Error connecting to MongoDB Atlas', err));
 
 // ℹ️ Se conecta a la base de datos
 require("./db");
