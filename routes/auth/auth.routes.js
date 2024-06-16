@@ -44,7 +44,7 @@ router.post("/login", async (req, res, next) => {
   if (!email || !password) {
     res
       .status(400)
-      .json({ errorMessage: "Todos los campos deben estar llenos" });
+      .json({ errorMessage: "Algún campo viene vacío" });
     return;
   }
   try {

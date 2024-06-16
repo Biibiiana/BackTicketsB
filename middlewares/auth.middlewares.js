@@ -7,16 +7,15 @@ const isTokenValid = (req, res, next) => {
     return res.status(401).json({ errorMessage: "No token provided" });
   }
 
-  const token = authHeader.split(" ")[1];
+  const token = authHeader.split(" ")[1]; // Suponiendo que el token está en el formato "Bearer <token>"
 
-  jwt.verify(token, process.env.TOKEN_SECRET, (err, decoded) => {
-    if (err) {
-      return res.status(401).json({ errorMessage: "Invalid token" });
-    }
-
+  try {
+    const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
     req.payload = decoded;
     next();
-  });
+  } catch (error) {
+    return res.status(401).json({ errorMessage: "Invalid token" });
+  }
 };
 
 module.exports = isTokenValid;
